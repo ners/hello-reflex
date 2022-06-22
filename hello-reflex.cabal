@@ -27,6 +27,6 @@ executable hello-reflex
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base, reflex-dom
-    hs-source-dirs:   app
+    build-depends: base, reflex-dom, haskell-ui
+    hs-source-dirs: app
     default-language: Haskell2010

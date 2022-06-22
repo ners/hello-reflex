@@ -31,18 +31,34 @@
         "type": "github"
       }
     },
+    "haskell-ui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1655044981,
+        "narHash": "sha256-3tl+tDnuC0LCFKSkwJGzyfOcfdiiwo8V4vkeWngD1p0=",
+        "owner": "alt-romes",
+        "repo": "haskell-ui",
+        "rev": "28e1afc073e1f7e19307dc51455a163202b7daac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alt-romes",
+        "repo": "haskell-ui",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1654964420,
-        "narHash": "sha256-Pu9TvVyWMLH362RGBYKMgX2ILSxRPtWovBmBC2s6Zjo=",
+        "lastModified": 1655770856,
+        "narHash": "sha256-GZRIyHjuCbOl0UA8ClKmyRxZkCQEh/rsvU0otH037BU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "419e07c3823fff0bbe24b2759a2d73a01ecd3c69",
+        "rev": "63198c9ccefdbd337cef0d85db0ea2689f4ce418",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixpkgs-unstable",
+        "ref": "nixos-21.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -51,6 +67,7 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
+        "haskell-ui": "haskell-ui",
         "nixpkgs": "nixpkgs"
       }
     }
