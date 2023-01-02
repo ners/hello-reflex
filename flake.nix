@@ -1,13 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat = {
       url = "github:edolstra/flake-compat";
-      flake = false;
-    };
-    haskell-ui = {
-      url = "github:alt-romes/haskell-ui";
       flake = false;
     };
   };
@@ -15,30 +11,25 @@
   outputs = inputs: with inputs; flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      haskell = pkgs.haskellPackages;
-      haskellDeps = drv: builtins.foldl'
-        (acc: type: acc ++ drv.getCabalDeps."${type}HaskellDepends")
-        [ ]
-        [ "executable" "library" "test" ];
-      helloReflex = haskell.callCabal2nix "HelloReflex" ./. { haskell-ui = haskellUi; };
-      haskellUi = haskell.callCabal2nix "haskell-ui" haskell-ui { };
-      helloReflexApp = flake-utils.lib.mkApp { drv = helloReflex; };
+      haskellDeps = drv: with builtins; concatLists (attrValues drv.getCabalDeps);
+      haskellPackages = pkgs.haskellPackages.override {
+        overrides = self: super: {
+          hello-reflex = self.callCabal2nix "HelloReflex" ./. { };
+        };
+      };
     in
     {
-      apps = {
-        helloReflex = helloReflexApp;
-        default = helloReflexApp;
-      };
-      packages = {
-        inherit helloReflex haskellUi;
-        default = helloReflex;
+      packages = rec {
+        inherit (haskellPackages) hello-reflex;
+        default = hello-reflex;
       };
 
       devShells.default = pkgs.mkShell {
-        nativeBuildInputs = [
-          (haskell.ghcWithPackages (_: haskellDeps helloReflex))
-          haskell.cabal-install
-          haskell.haskell-language-server
+        nativeBuildInputs = with haskellPackages; [
+          (ghcWithPackages (_: haskellDeps hello-reflex))
+          cabal-install
+          fourmolu
+          haskell-language-server
         ];
       };
     });
